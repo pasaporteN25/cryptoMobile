@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.feluts.cryptostats.api.ApiBNB
 import com.feluts.cryptostats.api.ApiBNBImp
+import com.feluts.cryptostats.api.ApiGeckoImp
 import com.feluts.cryptostats.model.CoinData
+import com.feluts.cryptostats.model.Coins
 import com.feluts.cryptostats.model.Respuesta
+import com.feluts.cryptostats.model.Welcome
 import retrofit2.Call
 import retrofit2.awaitResponse
 
@@ -13,7 +16,7 @@ class InicioViewModel : ViewModel() {
 
     val listaCoins = ArrayList<CoinData>()
 
-    fun getCrypto(): Call<Respuesta>{
+    fun getCrypto(): Call<Welcome>{
         val api = ApiBNBImp()
         return api.getAllCrypto()
     }
@@ -31,22 +34,37 @@ class InicioViewModel : ViewModel() {
                 //Log.d("InicioVM dice: ", data.toString())
 
 
-//                for(coin in data.data[0].monedas){
-//                    //Log.d("Data:",coin.name)
-//                    listaCoins.add(
-//                        CoinData(coin.status, coin.simbolo
-//                            ,coin.name, coin.icono
-//                            ,coin.MCap, coin.precio
-//                            ,coin.cambio, coin.url
-//                            ,coin.vol24h, coin.precioenBtc
-//                        )
-//                    )
-//                }
+                for(coin in data.data.monedas){
+                    //Log.d("Data:",coin.name)
+                    listaCoins.add(
+                        CoinData(coin.status, coin.simbolo
+                            ,coin.name, coin.icono
+                            ,coin.MCap, coin.precio
+                            ,coin.cambio, coin.url
+                            ,coin.vol24h, coin.precioenBtc
+                        )
+                    )
+                }
             }
         }else{
             Log.d("IVM resp: ",resp.errorBody().toString())
         }
         return listaCoins
     }
+
+
+    //coingecko test
+//
+//    val lista = ArrayList<Coins>()
+//
+//    suspend fun getCoins():List<Coins>{
+//        val api = ApiGeckoImp()
+//        return api.getAllCoins()
+//    }
+//
+//    suspend fun getAllCoins():List<Coins>{
+//        return getCoins()
+//    }
+
 
 }
